@@ -1,0 +1,40 @@
+
+<form>
+  <a href="#" routerLink="/entreprise/create/" class="btn btn-success">Create New Entreprise</a>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col" ><span>Name </span></th>
+                <th scope="col" ><span>Description</span></th>
+                <th scope="col" ><span>Category</span></th>
+                <th scope="col" ><span>Creator</span></th>
+                <th scope="col" ><span>likes count</span></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let product of entreprises ">
+                <th scope="row"><img class="mr-2" [src]= "" style="width: 20px" /></th>
+                <td>{{ product.title }}</td>
+                <td>{{ product.description }}</td>
+                <td>{{ product.category_details.name }}</td>
+                <td>{{ product.creator.first_name }} {{ product.creator.last_name }} </td>
+                <td> {{ product.likes_count }}</td>
+                <td>
+                    <a href="" [routerLink]="['/entreprise/view', product.id]" class="btn btn-info">View</a>
+                    <a href="#" [routerLink]="['/entreprise/edit', product.id]" class="btn btn-primary">Edit</a>
+                    <button type="button" (click)="deleteEntreprise(product.id)" class="btn btn-danger">Delete</button>
+                </td>
+
+            </tr>
+        </tbody>
+    </table>
+    <div class="d-flex justify-content-between p-2">
+        <ngb-pagination ></ngb-pagination
+        ><select class="custom-select" style="width: auto" >
+            <option [ngValue]="2">2 items per page</option>
+            <option [ngValue]="4">4 items per page</option>
+            <option [ngValue]="6">6 items per page</option>
+        </select>
+    </div>
+</form>

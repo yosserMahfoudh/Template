@@ -1,0 +1,34 @@
+<sb-layout-dashboard>
+    <form  (ngSubmit)="onSubmit()" [formGroup]="productForm">
+        <div class="card-body" >
+            <div class="form-group" >
+                <label for="title">Title</label>
+                <input  [(ngModel)]="title" type="text" class="form-control" name="title" id="title" formControlName="title" required>
+
+            </div>
+            <div class="form-group" >
+                <label for="shortD">Short description</label>
+                <input  [(ngModel)]="short_description"  name="short_description" type="text" class="form-control"  id="short_description" formControlName="short_description">
+            </div>
+            <div class="form-group" >
+                <label for="desc">Description</label>
+                <input [(ngModel)]="description" name="description"  type="text" class="form-control" id="description" formControlName="description">
+            </div>
+            <div class="form-group" >
+                <label for="Category">Category</label>
+                <select name="category" formControlName="category"  class="custom-select mb-3">
+                    <option [ngValue]="null" disabled>Choose category</option>
+                    <option  *ngFor="let option of listCategory" [value]="option._id" [selected]="option.id==='dir'">
+                        {{option.name}}
+
+                    </option>
+              </select>
+            </div>
+
+
+                <br>
+                <button type="submit"  class="btn btn-primary">Add</button>
+
+        </div>
+    </form>
+</sb-layout-dashboard>
