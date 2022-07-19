@@ -1,6 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '@modules/auth/services/auth.service';
 import { CategoriesService } from '@modules/categories/services/categories.service';
 import { Entreprise } from '@modules/entreprises/models';
@@ -13,25 +13,30 @@ import { EntrepriseService } from '@modules/entreprises/services/entreprises.ser
 })
 export class EditEntrepriseComponent implements OnInit {
 
-  constructor( private categoryService: CategoriesService,private auth: AuthService,private route: ActivatedRoute, private entrepriseService: EntrepriseService) { }
+  constructor( private router: Router,private categoryService: CategoriesService,private auth: AuthService,private route: ActivatedRoute, private entrepriseService: EntrepriseService) { }
   @Input()listCategory : string[]=[];
 
   @Input()selectedValue: string="";
-  productForm !: FormGroup;
+  //productForm !: FormGroup;
   entreprise: any;
   currentEntreprise = null;
   currentIndex = -1;
   name = '';
   loading!:boolean
   userId!: string;
+  idCat : any;
 
+productForm = new FormGroup({
+    title:new FormControl(),
+    short_description:new FormControl(),
+    description:new FormControl(),
+    category:new FormControl(),
+    image:new FormControl()
+   });
 
   ngOnInit(): void {
-    this.entreprise = this.getEntrepriseById(this.route.snapshot.params.id);
-
-       //this.getById(this.route.snapshot.params.id);
-
-      // this.userId=this.auth.userId;
+   this.getEntrepriseById(this.route.snapshot.params.id);
+    //this.selectedValue= this.entreprise.category_details.id;
        this.getCategory();
 
   }
@@ -51,33 +56,46 @@ export class EditEntrepriseComponent implements OnInit {
   }
 
   getEntrepriseById(id: any) {
-    this.entrepriseService.read(id)
+
+   this.entreprise=Object.assign({},this.entrepriseService.read(id)
       .subscribe((res) => {
-        console.log(res.data.entreprise.title)
-        this.entreprise=res.data.entreprise;
-        console.log(this.entreprise)
+        console.log(res.data.entreprise)
+        this.productForm = new FormGroup({
+            title:new FormControl(res.data.entreprise.title),
+            short_description:new FormControl(res.data.entreprise.short_description),
+            description:new FormControl(res.data.entreprise.description),
+            category:new FormControl(res.data.entreprise.category_details._id),
+           // image:new FormControl()
+
+        })
+       // this.entreprise=res.data.entreprise;
+        console.log(this.productForm)
       }, error => {
         console.log(error);
-      });
+      }));
   }
 
-  updateProduct(entreprise: Entreprise, id: string)
+
+
+  updateProduct(entreprise: Entreprise)
   {
-       return new Promise((resolve, reject) =>{
-          let product: FormData =new FormData();
-          product.append('product',JSON.stringify(entreprise));
-          this.entrepriseService.update(id,product).subscribe(
-              (        entreprises:any) => {
+       this.idCat=this.route.snapshot.params.id;
+
+          this.entrepriseService.update(entreprise,this.idCat).subscribe(
+              ( entreprises:any) => {
+                console.log(entreprises);
                   if (entreprises=== 201) {
 
-                      resolve(entreprises);  }
+                      console.log(entreprises);  }
 
 
               },
               (        error) => {
-                reject(error);
+                console.log(error);
               });
-  });
+
+  this.router.navigate(['/entreprise']);
+
   }
 
 

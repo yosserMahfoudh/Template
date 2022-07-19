@@ -69,7 +69,7 @@ onSubmit(){
     product.short_description=this.productForm.get('short_description')?.value;
     product.description=this.productForm.get('description')?.value;
     product.category=this.productForm.get('category')?.value;
-  //  product.image= this.productForm.get('image')?.value;
+    //product.image= this.productForm.get('image')?.value;
     console.log(this.auth.userId);
     product.created_by =this.auth.userId;
     console.log(localStorage);
@@ -114,7 +114,7 @@ onSubmit(){
                 (        error) => {
                   reject(error);
                 });
-    }); 
+    });
     }
 
 

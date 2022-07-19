@@ -31,11 +31,21 @@ export class EntrepriseService {
     return this.httpClient.post(baseURL+'/create', data, {headers});
   }
 
-  update(id: any, data: any): Observable<any> {
+  updatee(data: any): Observable<any> {
     const headers = new HttpHeaders({
         "Authorization": "" + localStorage.getItem("token")
       });
-    return this.httpClient.put(`${baseURL}/${id}` + "/update", data,  {headers});
+      console.log( headers)    //headers: new HttpHeaders()
+    return this.httpClient.post(baseURL+'/create', data, {headers});
+  }
+
+  update( data: any, id: any) {
+   console.log(data);
+   console.log(id);
+   const headers = new HttpHeaders({
+    "Authorization": "" + localStorage.getItem("token")
+  });
+return this.httpClient.put(`${baseURL}/${id}` + "/update", data,  {headers});
   }
 
   delete(id: any): Observable<any> {
